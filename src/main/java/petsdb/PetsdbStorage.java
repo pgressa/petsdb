@@ -23,6 +23,7 @@ public class PetsdbStorage {
         } catch (Exception e)
         {
             System.out.println("PetsStorage() " + e.toString());
+            e.printStackTrace();
         }
     }
 
