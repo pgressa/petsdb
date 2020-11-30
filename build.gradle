@@ -3,7 +3,7 @@ plugins {
     id "io.micronaut.application" version '1.0.5'
 }
 
-version "0.9"
+version "1.1"
 group "petsdb"
 
 repositories {

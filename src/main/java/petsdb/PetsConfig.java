@@ -12,14 +12,14 @@ public class PetsConfig {
     ApplicationContext applicationContext;
 
     public String getDBHost() {
-        return applicationContext.getEnvironment().getProperty("db-host", String.class).orElse("10.0.1.4");
+        return applicationContext.getEnvironment().getProperty("dbhost", String.class).orElse("undefined");
     }
 
     public String getDBUser() {
-        return applicationContext.getEnvironment().getProperty("db-user", String.class).orElse("pet");
+        return applicationContext.getEnvironment().getProperty("dbuser", String.class).orElse("undefined");
     }
 
     public String getDBPassword() {
-        return applicationContext.getEnvironment().getProperty("db-password", String.class).orElse("Qazwsx12!");
+        return applicationContext.getEnvironment().getProperty("dbpassword", String.class).orElse("undefined");
     }
 }

@@ -10,9 +10,9 @@ public class PetsdbController {
     private PetsdbStorage petsdbStorage;
 
     public PetsdbController(PetsConfig petsConfig) {
-        System.out.println("Host " + petsConfig.getDBHost());
-        System.out.println("User " + petsConfig.getDBUser());
-        System.out.println("Password " + petsConfig.getDBPassword());
+        System.out.println("DB Host " + petsConfig.getDBHost());
+        System.out.println("DB User " + petsConfig.getDBUser());
+        System.out.println("DB Password " + petsConfig.getDBPassword());
         petsdbStorage = new PetsdbStorage(petsConfig.getDBHost(), petsConfig.getDBUser(), petsConfig.getDBPassword());
     }
 
