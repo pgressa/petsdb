@@ -10,11 +10,8 @@ public class PetsdbStorage {
 
     private Session session;
     private Schema petsDb;
-    private String dbHost = "10.0.1.4";
-    private String dbUser = "pet";
-    private String dbPassword = "Qazwsx12!";
 
-    public PetsdbStorage() {
+    public PetsdbStorage(String dbHost, String dbUser, String dbPassword) {
 
         try  {
             session = new SessionFactory().getSession("mysqlx://" + dbHost + ":33060/pets?user=" + dbUser + "&password=" + dbPassword);
