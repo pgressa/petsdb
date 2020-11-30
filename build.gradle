@@ -29,7 +29,6 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
     runtime "mysql:mysql-connector-java:8.0.22"
     implementation("mysql:mysql-connector-java:8.0.22")
-    implementation("io.micronaut.sql:micronaut-jdbc")
 }
 
 mainClassName = "petsdb.Application"
@@ -43,7 +42,7 @@ dockerfileNative {
   args('-XX:MaximumHeapSizePercent=80')
 }
 nativeImage {
-    args("--initialize-at-build-time=petsdb -H:IncludeResourceBundles=com.mysql.cj.LocalizedErrorMessages")
+    args("--initialize-at-build-time=petsdb")
 }
 dockerBuild {
     images = ["fra.ocir.io/sefinland/mrinne/$project.name:$project.version"]
