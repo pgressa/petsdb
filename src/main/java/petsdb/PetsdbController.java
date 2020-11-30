@@ -9,8 +9,11 @@ import io.micronaut.http.annotation.Post;
 public class PetsdbController {
     private PetsdbStorage petsdbStorage;
 
-    public PetsdbController() {
-        petsdbStorage = new PetsdbStorage();
+    public PetsdbController(PetsConfig petsConfig) {
+        System.out.println("Host " + petsConfig.getDBHost());
+        System.out.println("User " + petsConfig.getDBUser());
+        System.out.println("Password " + petsConfig.getDBPassword());
+        petsdbStorage = new PetsdbStorage(petsConfig.getDBHost(), petsConfig.getDBUser(), petsConfig.getDBPassword());
     }
 
     @Get("/")
