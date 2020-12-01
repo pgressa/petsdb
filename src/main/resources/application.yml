@@ -4,4 +4,7 @@ micronaut:
 
 dbhost: 127.0.0.1
 dbuser: root
-dbpassword: Qazwsx12!
+dbpassword:
+sauronuri: https://elasticsearch.dev.sefinland.sauron.eu-frankfurt-1.oracledx.com
+sauronuser: sefinland
+sauronpassword:
