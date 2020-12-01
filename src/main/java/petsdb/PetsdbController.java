@@ -64,11 +64,11 @@ public class PetsdbController {
     {
         if(pet.length() == 0)
         {
-            putLog("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "add error: empty pet" + "\"}\n");
+            putLog("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "add() error: empty pet" + "\"}\n");
             return "'Error':'Empty pet'";
         } else {
             String res = petsdbStorage.add(pet);
-            putLog("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "add" + "\"}\n");
+            putLog("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "add()" + "\"}\n");
             return res;
         }
     }
