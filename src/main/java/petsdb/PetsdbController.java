@@ -76,7 +76,7 @@ public class PetsdbController {
     public String getLog()
     {
         if(petsConfig.getSauronUri() != "undefined") {
-            HttpResponse<String> rsp = httpClient.toBlocking().exchange(HttpRequest.GET("/pet/_search")
+            HttpResponse<String> rsp = httpClient.toBlocking().exchange(HttpRequest.GET(petsConfig.getSauronUri() + "/_search")
                             .contentType(MediaType.APPLICATION_JSON)
                             .basicAuth(petsConfig.getSauronUser(), petsConfig.getSauronPassword()),
                     String.class);
@@ -92,7 +92,7 @@ public class PetsdbController {
     {
         if(petsConfig.getSauronUri() != "undefined") {
             System.out.println("=====> LOG PUT:\n" + json);
-            HttpResponse<String> rsp = httpClient.toBlocking().exchange(HttpRequest.POST("/pet/_bulk", json)
+            HttpResponse<String> rsp = httpClient.toBlocking().exchange(HttpRequest.POST(petsConfig.getSauronUri() + "/_bulk", json)
                             .contentType(MediaType.APPLICATION_JSON)
                             .basicAuth(petsConfig.getSauronUser(), petsConfig.getSauronPassword()),
                     String.class);
