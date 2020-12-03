@@ -1,9 +1,8 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "6.1.0"
     id "io.micronaut.application" version '1.0.5'
 }
 
-version "1.1"
+version "1.4"
 group "petsdb"
 
 repositories {
@@ -24,7 +23,7 @@ dependencies {
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut:micronaut-runtime")
     runtimeOnly("org.slf4j:slf4j-simple")
-    testImplementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-http-client")
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
     runtime "mysql:mysql-connector-java:8.0.22"
