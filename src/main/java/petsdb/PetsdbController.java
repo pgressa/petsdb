@@ -3,18 +3,13 @@ package petsdb;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
-import io.micronaut.http.client.DefaultHttpClientConfiguration;
-import io.micronaut.http.client.HttpClientConfiguration;
+import io.micronaut.http.annotation.*;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
-import io.micronaut.runtime.ApplicationConfiguration;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.nio.charset.StandardCharsets;
 
 @Controller("/petsdb")
 public class PetsdbController {
@@ -32,6 +27,12 @@ public class PetsdbController {
     @Client()
     @Inject
     RxHttpClient httpClient;
+
+    @Get("/auth/")
+    String auth(@QueryValue String token)
+    {
+        return doAuth(token);
+    }
 
     @Get("/log")
     String log()
@@ -104,4 +105,32 @@ public class PetsdbController {
         }
     }
 
+    public String doAuth(String token)
+    {
+        String auth = "mika:123456";
+        byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.ISO_8859_1));
+        String authString = new String(encodedAuth);
+        System.out.println("TOKEN: '" + authString + "'");
+        System.out.println("INPUT: '" + token + "'");
+        String ret = "";
+        if(authString.equals(token)) {
+            System.out.println("MATCH!");
+            ret =
+                    "{" +
+                            "\"active\": true," +
+                            "\"principal\": \"mrinne@oracle.com\"," +
+                            "\"scope\": [\"petsdb\", \"log\"]," +
+                            "\"expiresAt\": \"2020-12-31T00:00:00+00:00\"," +
+                            "}";
+        } else {
+            System.out.println("NO MATCH!");
+            ret =
+                    "{" +
+                            "\"active\": false," +
+                            "\"expiresAt\": \"2020-12-31T00:00:00+00:00\"," +
+                            "\"wwwAuthenticate\": \"Bearer realm=\"" +
+                            "}";
+        }
+        return ret;
+    }
 }
