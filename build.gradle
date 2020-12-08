@@ -2,8 +2,8 @@ plugins {
     id "io.micronaut.application" version '1.1.0'
 }
 
-version "2.8"
-group "petsdb"
+version "0.5"
+group "auth"
 
 repositories {
     mavenCentral()
@@ -15,7 +15,7 @@ micronaut {
     testRuntime "junit5"
     processing {
         incremental true
-        annotations "petsdb.*"
+        annotations "auth.*"
     }
 }
 
@@ -32,7 +32,7 @@ dependencies {
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
 }
 
-mainClassName = "petsdb.Application"
+mainClassName = "auth.Application"
 java {
     sourceCompatibility = JavaVersion.toVersion('1.8')
     targetCompatibility = JavaVersion.toVersion('1.8')
@@ -43,7 +43,7 @@ dockerfileNative {
   args('-XX:MaximumHeapSizePercent=80')
 }
 nativeImage {
-    args("--initialize-at-build-time=petsdb")
+    args("--initialize-at-build-time=auth")
 }
 dockerBuild {
     images = ["fra.ocir.io/sefinland/mrinne/$project.name:$project.version"]

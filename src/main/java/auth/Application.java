@@ -1,4 +1,4 @@
-package petsdb;
+package auth;
 
 import io.micronaut.runtime.Micronaut;
 
