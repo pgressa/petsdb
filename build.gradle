@@ -24,10 +24,9 @@ dependencies {
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-http-client")
     runtimeOnly("org.slf4j:slf4j-simple")
-
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
-    runtime "mysql:mysql-connector-java:8.0.22"
-    implementation("mysql:mysql-connector-java:8.0.22")
+    runtimeOnly("com.fnproject.fn:runtime:1.0.109")
+    implementation("io.micronaut.oci:micronaut-oci-function")
+    implementation("io.micronaut.oci:micronaut-oci-sdk")
 
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
 }
