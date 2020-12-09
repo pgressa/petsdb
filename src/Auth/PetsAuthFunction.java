@@ -14,7 +14,7 @@ public class PetsAuthFunction
     {
         System.out.println(input.token);
 
-        TestAuthFunction.Result result = new TestAuthFunction.Result();
+        PetsAuthFunction.Result result = new PetsAuthFunction.Result();
 
         if (input.token != null && !input.token.equalsIgnoreCase("invalid"))
         {
