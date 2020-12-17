@@ -18,8 +18,8 @@ package petsdb;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 /**
- * @author Pavol Gressa
- * @since 2.3
+ * Configuration property bean that matches configuration.mysql
+ * TODO: this doesnt work now in function
  */
 @ConfigurationProperties(MysqlConfiguration.PREFIX)
 public class MysqlConfiguration {

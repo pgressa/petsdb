@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.micronaut.core.annotation.Introspected;
 
 /**
- * @author Pavol Gressa
- * @since 2.3
+ * DTO so you don't have to construct the json manually.
  */
 @Introspected
 public class SauronLog {

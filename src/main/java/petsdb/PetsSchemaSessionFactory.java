@@ -28,6 +28,9 @@ import java.util.Map;
 
 /**
  * Pet schema bean factory.
+ *
+ * Instead of creating the schema in controller constructor, we create a Factory for the schema,
+ * that is basically a way how to create beans from third party objects.
  */
 @Factory
 public class PetsSchemaSessionFactory {
@@ -40,6 +43,11 @@ public class PetsSchemaSessionFactory {
         this.mysqlConfiguration = mysqlConfiguration;
     }
 
+    /**
+     * this generates the Schema bean. Singleton means this is used just once, but other
+     * bean scopes can be used as well.
+     * @return
+     */
     @Singleton
     Schema schema(){
         String connectionString = "mysqlx://" + mysqlConfiguration.getUsername() +

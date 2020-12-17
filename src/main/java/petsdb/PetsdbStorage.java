@@ -7,6 +7,11 @@ import io.micronaut.runtime.event.annotation.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Instaed of creating the queries, the micronaut-data provides Repository
+ * bean that does lot of thins for you for free:
+ * TODO - Use repository
+ */
 @Singleton
 public class PetsdbStorage {
 

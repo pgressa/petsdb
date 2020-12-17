@@ -22,8 +22,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Singleton;
 
 /**
- * @author Pavol Gressa
- * @since 2.3
+ * Default imlementation of client, since I don't have access to sauron and
+ * can't properly test.
  */
 @Singleton
 public class SauronDefaultClient implements SauronOperations{
