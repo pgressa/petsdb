@@ -2,9 +2,13 @@ micronaut:
   application:
     name: petsdb
 
-dbhost: 127.0.0.1
-dbuser: root
-dbpassword: Qazwsx12!
-sauronuri:
-sauronuser:
-sauronpassword:
+configuration:
+  mysql:
+    username: "${DB_USERNAME}"
+    password: "${DB_PASSWORD}"
+    hostname: "${DB_HOSTNAME}"
+
+#  sauron:
+#    url: "${SAURON_URI}"
+#    user: "${SAURON_USER}"
+#    password: "${SAURON_PASSWORD}"

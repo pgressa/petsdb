@@ -2,25 +2,21 @@ package petsdb;
 
 import javax.inject.Singleton;
 import com.mysql.cj.xdevapi.*;
+import io.micronaut.context.event.StartupEvent;
+import io.micronaut.runtime.event.annotation.EventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class PetsdbStorage {
 
-    // Connect to mysql server on OCI
+    public static final Logger log = LoggerFactory.getLogger(PetsdbStorage.class);
 
-    private Session session;
+    public static final String COLLECTION = "pets";
     private Schema petsDb;
 
-    public PetsdbStorage(String dbHost, String dbUser, String dbPassword) {
-
-        try  {
-            session = new SessionFactory().getSession("mysqlx://" + dbHost + ":33060/pets?user=" + dbUser + "&password=" + dbPassword);
-            petsDb = session.getSchema("pets");
-            petsDb.createCollection("pets"); // Let's create the pets collection if database empty
-        } catch (Exception e)
-        {
-            System.out.println("PetsStorage() " + e.toString());
-        }
+    public PetsdbStorage(Schema petsDb) {
+        this.petsDb = petsDb;
     }
 
     String list() {
@@ -59,6 +55,17 @@ public class PetsdbStorage {
         {
             System.out.println("add(" + pet + ") " + e.toString());
             return "'Error':'add(" + pet + ") : " + e.toString() + "'";
+        }
+    }
+
+    @EventListener
+    void onStartup(StartupEvent startupEvent){
+        try {
+            petsDb.getCollection(PetsdbStorage.COLLECTION, true);
+            log.debug("Collection " + PetsdbStorage.COLLECTION + " exists.");
+        }catch (Exception e) {
+            log.debug("Initializing " + PetsdbStorage.COLLECTION + " collection.");
+            petsDb.createCollection(PetsdbStorage.COLLECTION); // Let's create the pets collection if database empty
         }
     }
 }

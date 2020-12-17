@@ -1,106 +1,76 @@
 package petsdb;
 
-import io.micronaut.http.HttpRequest;
-import io.micronaut.http.HttpResponse;
-import io.micronaut.http.MediaType;
+import io.micronaut.http.BasicAuth;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
-import io.micronaut.http.client.DefaultHttpClientConfiguration;
-import io.micronaut.http.client.HttpClientConfiguration;
-import io.micronaut.http.client.RxHttpClient;
-import io.micronaut.http.client.annotation.Client;
-import io.micronaut.runtime.ApplicationConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import petsdb.sauron.SauronClient;
+import petsdb.sauron.SauronConfiguration;
+import petsdb.sauron.SauronOperations;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
+/**
+ * - default implementation of sauron client if sauron configuration is not included
+ * -
+ */
 @Controller("/petsdb")
 public class PetsdbController {
-    private PetsdbStorage petsdbStorage;
-    private PetsConfig petsConfig;
+    public static final Logger logger = LoggerFactory.getLogger(PetsdbController.class);
 
-    public PetsdbController(PetsConfig petsConfig) {
-        this.petsConfig = petsConfig;
-        System.out.println("DB Host " + petsConfig.getDBHost());
-        System.out.println("DB User " + petsConfig.getDBUser());
-        System.out.println("DB Password " + petsConfig.getDBPassword());
-        petsdbStorage = new PetsdbStorage(petsConfig.getDBHost(), petsConfig.getDBUser(), petsConfig.getDBPassword());
+    private final PetsdbStorage petsdbStorage;
+    private final SauronOperations sauronOperations;
+    private final BasicAuth sauronBasicAuth;
+
+    public PetsdbController(PetsdbStorage petsdbStorage,
+                            SauronOperations sauronOperations,
+                            SauronConfiguration sauronConfiguration) {
+        this.sauronOperations = sauronOperations;
+        this.petsdbStorage = petsdbStorage;
+        this.sauronBasicAuth = new BasicAuth(sauronConfiguration.getUser(), sauronConfiguration.getPassword());
     }
-
-    @Client()
-    @Inject
-    RxHttpClient httpClient;
 
     @Get("/log")
     String log()
     {
-        return getLog();
+        return sauronOperations.getLog(sauronBasicAuth);
     }
 
     @Post("/log")
     String log(@Body String json)
     {
-        return putLog(json);
+        return sauronOperations.addLog(sauronBasicAuth, json);
     }
 
     @Get("/")
     String list() {
         String res = petsdbStorage.list();
-        putLog("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "list()" + "\"}\n");
+        logger.debug("List pets" + res);
+        log("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "list()" + "\"}\n");
         return res;
     }
 
     @Get("/{name}")
     String get(String name) {
         String res = petsdbStorage.get(name);
-        putLog("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "get(" + name + ")" + "\"}\n");
+        logger.debug("Get pet" + res);
+        log("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "get(" + name + ")" + "\"}\n");
         return res;
     }
 
     @Post("/")
     String add(@Body String pet)
     {
+        logger.debug("Add pet" + pet);
         if(pet.length() == 0)
         {
-            putLog("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "add() error: empty pet" + "\"}\n");
+            log("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "add() error: empty pet" + "\"}\n");
             return "'Error':'Empty pet'";
         } else {
             String res = petsdbStorage.add(pet);
-            putLog("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "add()" + "\"}\n");
+            log("{\"index\":{\"_id\":\"" + System.currentTimeMillis() + "\"}}\n{\"data\":\"" + "add()" + "\"}\n");
             return res;
-        }
-    }
-
-    public String getLog()
-    {
-        if(petsConfig.getSauronUri() != "undefined") {
-            HttpResponse<String> rsp = httpClient.toBlocking().exchange(HttpRequest.GET(petsConfig.getSauronUri() + "/_search")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .basicAuth(petsConfig.getSauronUser(), petsConfig.getSauronPassword()),
-                    String.class);
-
-            System.out.println(rsp.getBody());
-            return rsp.getBody().orElse("");
-        } else {
-            return "";
-        }
-    }
-
-    public String putLog(String json)
-    {
-        if(petsConfig.getSauronUri() != "undefined") {
-            System.out.println("=====> LOG PUT:\n" + json);
-            HttpResponse<String> rsp = httpClient.toBlocking().exchange(HttpRequest.POST(petsConfig.getSauronUri() + "/_bulk", json)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .basicAuth(petsConfig.getSauronUser(), petsConfig.getSauronPassword()),
-                    String.class);
-
-            System.out.println(rsp.getBody());
-            return rsp.getBody().orElse("");
-        } else {
-            return ""; 
         }
     }
 
